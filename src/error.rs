@@ -8,6 +8,8 @@ use std::path::PathBuf;
 use thiserror::Error;
 use tracing_error::SpanTrace;
 
+use crate::git::GitError;
+
 pub type Result<T, E = Error> = std::result::Result<T, E>;
 
 #[derive(Error, Debug)]
@@ -28,20 +30,11 @@ pub enum Error {
         dst: PathBuf,
         url: String,
         rev: String,
-        #[cfg(feature = "git2")]
-        source: git2::Error,
-        #[cfg(feature = "git_cli")]
-        source: crate::git::GitCliError,
+        source: GitError,
         msg: String,
     },
     #[error("try to find git config '{key:?}'")]
-    GitFindConfig {
-        key: String,
-        #[cfg(feature = "git2")]
-        source: git2::Error,
-        #[cfg(feature = "git_cli")]
-        source: crate::git::GitCliError,
-    },
+    GitFindConfig { key: String, source: GitError },
 
     #[error("canonicalize {path:?}")]
     CanonicalizePath {
