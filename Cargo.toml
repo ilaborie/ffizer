@@ -95,10 +95,11 @@ opt-level = 'z'
 codegen-units = 1
 
 [features]
-default = ["cli", "git2"]
+default = ["cli", "git_cli"]
 test_remote = []                                           # feature has no explicit dependencies
 cli = ["self_update", "human-panic", "tracing-subscriber"]
 git2 = ["dep:git2", "dep:git2_credentials"]
+git_cli = []
 
 [package.metadata.binstall]
 pkg-url = "{ repo }/releases/download/{ version }/{ name }_{ version }-{ target }{ archive-suffix }"

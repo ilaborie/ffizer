@@ -28,11 +28,20 @@ pub enum Error {
         dst: PathBuf,
         url: String,
         rev: String,
+        #[cfg(feature = "git2")]
         source: git2::Error,
+        #[cfg(feature = "git_cli")]
+        source: crate::git::GitCliError,
         msg: String,
     },
     #[error("try to find git config '{key:?}'")]
-    GitFindConfig { key: String, source: git2::Error },
+    GitFindConfig {
+        key: String,
+        #[cfg(feature = "git2")]
+        source: git2::Error,
+        #[cfg(feature = "git_cli")]
+        source: crate::git::GitCliError,
+    },
 
     #[error("canonicalize {path:?}")]
     CanonicalizePath {
